@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Notification</title>
+  </head>
+  <body style="font-family: Arial, sans-serif">
+    <h2>Halo, {{.Name}}</h2>
+    <p>Terima kasih telah mendaftar di aplikasi kami.</p>
+    <p>Klik tautan berikut untuk verifikasi akun Anda:</p>
+    <a
+      href="{{.Link}}"
+      style="
+        background: #3182e6;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+    >
+      Verifikasi Akun
+    </a>
+    <p>Salam,<br />Tim Kami</p>
+  </body>
+</html>

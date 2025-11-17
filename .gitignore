@@ -1,0 +1,53 @@
+# ========================================
+# Environment
+# ========================================
+.env
+*.env
+.env.*
+
+# ========================================
+# Go Build & Binaries
+# ========================================
+bin/
+build/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# ========================================
+# Logs
+# ========================================
+*.log
+logs/
+log/
+
+# ========================================
+# Temporary & Cache
+# ========================================
+tmp/
+cache/
+*.tmp
+*.bak
+
+# ========================================
+# IDE / Editor
+# ========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ========================================
+# Upload folders (ignore contents but keep folder structure)
+# ========================================
+uploads/**
+!uploads/
+!uploads/employees/
+!uploads/employees/documents/
+!uploads/employees/images/
+!uploads/employees/documents/.gitkeep
+!uploads/employees/images/.gitkeep
