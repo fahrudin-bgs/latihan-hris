@@ -20,3 +20,12 @@ type ResRole struct {
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
 }
+
+func ToResRole(role models.Role) ResRole {
+	return ResRole{
+		ID:        role.ID,
+		Name:      role.Name,
+		CreatedAt: role.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt: role.UpdatedAt.Format("2006-01-02 15:04:05"),
+	}
+}

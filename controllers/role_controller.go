@@ -18,7 +18,12 @@ func GetRoles(c *gin.Context) {
 		return
 	}
 
-	utils.SuccessResponse(c, http.StatusOK, "Success Get All User", roles)
+	var res []dto.ResRole
+	for _, u := range roles {
+		res = append(res, dto.ToResRole(u))
+	}
+
+	utils.SuccessResponse(c, http.StatusOK, "Success Get All User", res)
 }
 
 func CreateRole(c *gin.Context) {
@@ -35,7 +40,9 @@ func CreateRole(c *gin.Context) {
 		return
 	}
 
-	utils.SuccessResponse(c, http.StatusOK, "Success Create New Role", data)
+	res := dto.ToResRole(data)
+
+	utils.SuccessResponse(c, http.StatusOK, "Success Create New Role", res)
 }
 
 func DeleteRole(c *gin.Context) {
