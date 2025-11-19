@@ -113,7 +113,7 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
-	if err := config.DB.Preload("User.Role").Preload("Division").First(&employee, employee.ID).Error; err != nil {
+	if err := config.DB.Preload("User.Role").Preload("Division").Preload("EmployeeDetail").First(&employee, employee.ID).Error; err != nil {
 		utils.ErrorResponse(c, http.StatusNotFound, err.Error())
 		return
 	}

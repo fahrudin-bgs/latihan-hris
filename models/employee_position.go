@@ -10,4 +10,8 @@ type EmployeePosition struct {
 	AssignedAt  *time.Time `gorm:"type:date"`
 	CreatedAt   time.Time  `gorm:"autoCreateTime"`
 	UpdatedAt   time.Time  `gorm:"autoUpdateTime"`
+
+	// Relasi ke model Employee
+	Employee Employee `gorm:"foreignKey:EmployeeID;constraint:OnDelete:CASCADE;"`
+	Position Position `gorm:"foreignKey:PositionID;constraint:OnDelete:SET NULL;"`
 }

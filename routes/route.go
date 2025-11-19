@@ -75,6 +75,13 @@ func RegisterRoute(r *gin.Engine) {
 		position.PUT("/:id", controllers.UpdatePosition)
 		position.DELETE("/:id", controllers.DeletePosition)
 	}
+
+	employeePosition := r.Group("/employee-position")
+	{
+		employeePosition.POST("/", controllers.CreateEmployeePosition)
+		employeePosition.PUT("/:id", controllers.UpdateEmployeePosition)
+		employeePosition.PUT("/end-date/:id",controllers.EndEmployeePosition)
+	}
 }
 
 func AuthRoute(r *gin.Engine) {
