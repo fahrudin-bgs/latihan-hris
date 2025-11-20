@@ -80,3 +80,17 @@ func GetAllPositionHistories(c *gin.Context) {
 
 	utils.SuccessResponse(c, http.StatusOK, "Get All Position Histories", res)
 }
+
+func GetPositionHistory(c *gin.Context) {
+	id := c.Param("id")
+	var history models.PositionHistory
+
+	if err := config.DB.First(&history, id).Error; err != nil {
+		utils.ErrorResponse(c, http.StatusNotFound, err.Error())
+		return
+	}
+
+	res := dto.ToResPositionHistory(history)
+
+	utils.SuccessResponse(c, http.StatusOK, "Get All Position Histories", res)
+}

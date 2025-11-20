@@ -89,6 +89,7 @@ func RegisterRoute(r *gin.Engine) {
 	{
 		positionHistory.GET("/:employee_id", controllers.GetAllPositionHistories)
 		positionHistory.POST("/:id", controllers.UpdatePositionHistory)
+		positionHistory.GET("/:id", controllers.GetPositionHistory)
 	}
 }
 
