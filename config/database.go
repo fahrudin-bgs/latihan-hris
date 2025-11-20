@@ -28,7 +28,7 @@ func ConnectDatabase() {
 		log.Fatal("Failed to connect to database")
 	}
 
-	DB = db
+	DB = db.Debug()
 
 	log.Println("Database Connected")
 }

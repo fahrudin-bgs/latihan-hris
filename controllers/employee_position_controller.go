@@ -92,15 +92,7 @@ func UpdateEmployeePosition(c *gin.Context) {
 
 	tx := config.DB.Begin()
 
-	parsedTime, err := time.Parse("2006-01-02", req.AssignedAt)
-	if err != nil {
-		utils.ErrorResponse(c, http.StatusBadRequest, "Invalid assigned_at format, use YYYY-MM-DD")
-		return
-	}
-
-	employeePosition.PositionID = &req.PositionID
-	employeePosition.Description = &req.Description
-	employeePosition.AssignedAt = &parsedTime
+	dto.ToUpdateEmployeePosition(&employeePosition, req)
 
 	if err := tx.Save(&employeePosition).Error; err != nil {
 		tx.Rollback()
@@ -117,7 +109,7 @@ func UpdateEmployeePosition(c *gin.Context) {
 	if lastHistory != nil {
 		lastHistory.PositionID = &req.PositionID
 		lastHistory.Description = &req.Description
-		lastHistory.StartDate = &parsedTime
+		lastHistory.StartDate = employeePosition.AssignedAt
 
 		if err := config.DB.Save(lastHistory).Error; err != nil {
 			utils.ErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -128,7 +120,7 @@ func UpdateEmployeePosition(c *gin.Context) {
 			EmployeeID:  req.EmployeeID,
 			PositionID:  &req.PositionID,
 			Description: &req.Description,
-			StartDate:   &parsedTime,
+			StartDate:   employeePosition.AssignedAt,
 		}
 
 		if err := config.DB.Create(&newHistory).Error; err != nil {
@@ -205,4 +197,18 @@ func EndEmployeePosition(c *gin.Context) {
 	tx.Commit()
 
 	utils.SuccessResponse(c, http.StatusOK, "Employee position updated successfully", nil)
+}
+
+func GetEmployeePosition(c *gin.Context) {
+	employeeID := c.Param("employee_id")
+	var position models.EmployeePosition
+
+	if err := config.DB.Preload("Position").Where("employee_id = ?", employeeID).
+		First(&position).Error; err != nil {
+		utils.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	res := dto.ToResEmployeePosition(position)
+	utils.SuccessResponse(c, http.StatusOK, "Get Employee Position", res)
 }

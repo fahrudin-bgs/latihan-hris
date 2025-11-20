@@ -87,7 +87,8 @@ func RegisterRoute(r *gin.Engine) {
 
 	positionHistory := r.Group("/position-history")
 	{
-		positionHistory.GET("/:employee_id", controllers.GelAllPositionHistories) // cek
+		positionHistory.GET("/:employee_id", controllers.GetAllPositionHistories)
+		positionHistory.POST("/:id", controllers.UpdatePositionHistory)
 	}
 }
 
