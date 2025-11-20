@@ -209,3 +209,47 @@ func VerifiedUser(c *gin.Context) {
 
 	utils.SuccessResponse(c, http.StatusOK, "User Verified", res)
 }
+
+func RefreshToken(ctx *gin.Context) {
+	var req struct {
+		RefreshToken string `json:"refresh_token" form:"refresh_token"`
+	}
+
+	if err := ctx.ShouldBind(&req); err != nil || req.RefreshToken == "" {
+		utils.ErrorResponse(ctx, http.StatusBadRequest, "Refresh token wajib diisi")
+		return
+	}
+
+	// Cek refresh token di database
+	var token models.RefreshToken
+	if err := config.DB.First(&token, "token = ?", req.RefreshToken).Error; err != nil {
+		utils.ErrorResponse(ctx, http.StatusUnauthorized, "Refresh token tidak valid")
+		return
+	}
+
+	// Cek masa berlaku
+	if time.Now().After(token.ExpiresAt) {
+		config.DB.Delete(&token)
+		utils.ErrorResponse(ctx, http.StatusUnauthorized, "Refresh token sudah kedaluwarsa")
+		return
+	}
+
+	// Validasi refresh token dengan JWT
+	jwtToken, err := jwt.Parse(req.RefreshToken, func(t *jwt.Token) (any, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method")
+		}
+		return []byte(os.Getenv("SECRET")), nil
+	})
+	if err != nil || !jwtToken.Valid {
+		utils.ErrorResponse(ctx, http.StatusUnauthorized, "Refresh token tidak valid")
+		return
+	}
+
+	// Buat access token baru menggunakan utils Anda
+	newAccessToken := utils.CreateAccessToken(uint(token.UserID))
+
+	utils.SuccessResponse(ctx, http.StatusOK, "Token berhasil diperbarui", gin.H{
+		"access_token": newAccessToken,
+	})
+}

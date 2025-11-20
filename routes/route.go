@@ -87,7 +87,7 @@ func RegisterRoute(r *gin.Engine) {
 
 	positionHistory := r.Group("/position-history")
 	{
-		positionHistory.GET("/:employee_id", controllers.GetAllPositionHistories)
+		positionHistory.GET("/employee/:employee_id", controllers.GetAllPositionHistories)
 		positionHistory.POST("/:id", controllers.UpdatePositionHistory)
 		positionHistory.GET("/:id", controllers.GetPositionHistory)
 	}
@@ -98,5 +98,6 @@ func AuthRoute(r *gin.Engine) {
 	r.POST("/register", controllers.Register)
 	r.POST("/logout", controllers.Logout)
 	r.GET("/me", middleware.AuthMiddleware(), controllers.CurrentUser)
+	r.POST("/refresh", controllers.RefreshToken)
 	r.GET("/verifikasi", controllers.VerifiedUser) // cek
 }
