@@ -11,7 +11,7 @@ func CreateAccessToken(userID uint) string {
 	// buat access token
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": userID,
-		"exp": time.Now().Add(time.Minute * 30).Unix(), // 30 menit
+		"exp": time.Now().Add(time.Hour * 24).Unix(), // 1 hari
 	})
 
 	// token

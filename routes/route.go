@@ -2,6 +2,7 @@ package routes
 
 import (
 	"latihan-hris/controllers"
+	"latihan-hris/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -80,7 +81,13 @@ func RegisterRoute(r *gin.Engine) {
 	{
 		employeePosition.POST("/", controllers.CreateEmployeePosition)
 		employeePosition.PUT("/:id", controllers.UpdateEmployeePosition)
-		employeePosition.PUT("/end-date/:id",controllers.EndEmployeePosition)
+		employeePosition.PUT("/end-date/:id", controllers.EndEmployeePosition)
+		employeePosition.GET("/:employee_id", controllers.GetEmployeePosition)
+	}
+
+	positionHistory := r.Group("/position-history")
+	{
+		positionHistory.GET("/:employee_id", controllers.GelAllPositionHistories) // cek
 	}
 }
 
@@ -88,5 +95,6 @@ func AuthRoute(r *gin.Engine) {
 	r.POST("/login", controllers.Login)
 	r.POST("/register", controllers.Register)
 	r.POST("/logout", controllers.Logout)
+	r.GET("/me", middleware.AuthMiddleware(), controllers.CurrentUser)
 	r.GET("/verifikasi", controllers.VerifiedUser) // cek
 }
