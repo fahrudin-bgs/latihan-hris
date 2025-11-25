@@ -95,7 +95,7 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	// Bind form-data
-	var req dto.ReqUser
+	var req dto.ReqUserUpdate
 	if err := c.ShouldBind(&req); err != nil {
 		utils.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -129,7 +129,6 @@ func UpdateUser(c *gin.Context) {
 	res := dto.ToResUserDetail(user)
 	utils.SuccessResponse(c, http.StatusOK, "Success Update User", res)
 }
-
 
 func DeleteUser(c *gin.Context) {
 	var user models.User

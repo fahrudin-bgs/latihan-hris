@@ -7,10 +7,17 @@ import (
 )
 
 type ReqUser struct {
-	Username   string `json:"username" form:"username" binding:"required"`
-	Email      string `json:"email" form:"email" binding:"required,email"`
-	RoleID     uint64 `json:"role_id" form:"role_id" binding:"required"`
-	Password   string `json:"password" form:"password" binding:"required"`
+	Username string `json:"username" form:"username" binding:"required"`
+	Email    string `json:"email" form:"email" binding:"required,email"`
+	RoleID   uint64 `json:"role_id" form:"role_id" binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
+}
+
+type ReqUserUpdate struct {
+	Username string `json:"username" form:"username" binding:"required"`
+	Email    string `json:"email" form:"email" binding:"required,email"`
+	RoleID   uint64 `json:"role_id" form:"role_id" binding:"required"`
+	Password string `json:"password" form:"password"`
 }
 
 func ToModelUser(req ReqUser) models.User {
@@ -74,7 +81,7 @@ func ToResUserDetail(user models.User) ResUserDetail {
 	}
 }
 
-func ToUpdateUser(user *models.User, req ReqUser) {
+func ToUpdateUser(user *models.User, req ReqUserUpdate) {
 	user.Username = req.Username
 	user.Email = req.Email
 	user.RoleID = &req.RoleID
